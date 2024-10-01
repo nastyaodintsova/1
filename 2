@@ -1,0 +1,59 @@
+class AbstractCat:
+    def __init__(self, w = 0):
+        self.w = w
+        
+    def eat(self, n):
+        if self.w == 100:
+            pass
+        k = n // 10
+        self.w = self.w + k
+        if self.w > 100:
+            self.w == 100
+        pass
+    def get_weight(self):
+        return self.w
+    
+    def __str__(self):
+        return f"{self.__class__.__name__} ({self.w})"
+    
+class HomeCat(AbstractCat):
+    def __init__(self, w, name):
+        super().__init__(w)
+        self.name = name
+        
+    def __str__(self):
+        return f'{super().__str__()}'
+        
+    def meow(self):
+        return "meow"
+    def get_name(self):
+        return self.name
+    def sleep(self):
+        return 'Snore' * (self.w // 5)
+class MouseCatcher(HomeCat):
+    def __init__(self, w, name):
+        super().__init__(w, name)
+    def __str__(self):
+        return f'{super().__str__()}'
+    def meow(self):
+        return f'{super().meow().upper()}'
+    def catch_mice(self):
+        return 'Got it!'
+abscat = AbstractCat()
+abscat.eat(125)
+abscat.eat(17)
+print(abscat)
+kitten = HomeCat(5, 'Murka')
+kitten.eat(125)
+kitten.eat(23)
+print(kitten)
+print(kitten.meow())
+print(kitten.sleep())
+cat = MouseCatcher(20, 'Lusya')
+cat.eat(125)
+cat.eat(17)
+print(cat)
+print(cat.meow())
+print(cat.sleep())
+print(cat.get_name())
+print(cat.catch_mice())
