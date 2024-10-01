@@ -1,0 +1,40 @@
+from math import gcd
+def reduce(a, b):
+        if b == 1:
+            return a, b
+        c = gcd(a, b)
+        a = a // c
+        b = b // c
+        return a, b
+class Fraction:
+    def __init__(self, s:str):
+        
+        c = s.split()
+        if len(c) < 2:
+            c = s.split('/')
+        self.a = int(c[0])
+        if len(c) > 1:
+            self.b = int(c[1])
+        else:
+            self.b = 1
+        s1 = reduce(self.a, self.b)
+        self.a = s1[0]
+        self.b = s1[1]
+        
+    
+    def __str__(self):
+        if self.b != 1:
+            return f"{self.a}/{self.b}"
+        else:
+            return f"{self.a}"
+    def __lt__(self, oth):
+        if  isinstance(oth, Fraction):
+            f = self.a * oth.b < self.b * oth.a
+            return f
+        else:
+            f = self.a < self.b * oth
+            return f
+    def __add__(self, other):
+        f = Fraction(str(self.a * other.b + self.b*other.a) + ' ' + str(self.b * other.b))
+        return f
+
