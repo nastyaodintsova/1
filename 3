@@ -1,0 +1,65 @@
+import telebot
+from telebot import types
+bot = telebot.TeleBot('7770151533:AAF6U6maiX9Bn6R-5G3f1-XvMGzOFALNFeg')
+k = 0
+t = 0
+d = {0: ['Какого цвета небо?', 'Голубое', 'Голубое', 'Жёлтое', 'Синее'],
+        1: ['Когда ели становятся белыми?','Зимой', 'Летом', 'Зимой', 'При дожде'],
+       2: ['Какой формы наша планета?', 'Эллипсоид', 'Шар', 'Куб', 'Эллипсоид']
+       }
+a, b, c = 1, 1, 1
+bt1, bt2, bt3 = 1, 1, 1
+img1 = ''
+@bot.message_handler(commands=['start'])
+def start_message(message):
+    bot.send_message(message.chat.id,"Привет!")
+
+@bot.message_handler(commands=['begin'])
+def begin_message(message):
+    global a, b, c,d, bt1, bt2, bt3, k
+    a = d[k][0]
+    b = d[k][1]
+    bt1 = d[k][2]
+    bt2 = d[k][3]
+    bt3 = d[k][4]
+    markup_codes = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    btn1 = types.KeyboardButton(bt1)
+    btn2 = types.KeyboardButton(bt2)
+    btn3 = types.KeyboardButton(bt3)
+    markup_codes.add(btn1, btn2, btn3)
+    bot.send_message(message.chat.id, a, reply_markup = markup_codes)
+
+@bot.message_handler(content_types=['text'])
+def text_message(message):
+    global a, b, c, d, bt1, bt2, bt3, k, t
+    if message.text == b:
+        bot.send_message(message.chat.id,'good')
+        t += 1
+    else:
+        bot.send_message(message.chat.id, f'too bad, {b}')
+    k += 1
+    if k < 3:
+        a = d[k][0]
+        b = d[k][1]
+        bt1 = d[k][2]
+        bt2 = d[k][3]
+        bt3 = d[k][4]
+        markup_codes = types.ReplyKeyboardMarkup(resize_keyboard=True)
+        btn1 = types.KeyboardButton(bt1)
+        btn2 = types.KeyboardButton(bt2)
+        btn3 = types.KeyboardButton(bt3)
+        markup_codes.add(btn1, btn2, btn3)
+        bot.send_message(message.chat.id, a, reply_markup = markup_codes)
+    else:
+        if t == 3:
+            bot.send_message(message.chat.id, f'Ты набрал {k} баллов из 3')
+            bot.send_message(message.chat.id, 'Ты замечательно осведомлен об окружающей среде!')
+            bot.send_photo(message.chat.id, "https://sun9-85.userapi.com/impg/0ZIhyOsCV__JbfQYdA7FT-UOA5xYClXCWXEisQ/gv5UGz6Mp7s.jpg?size=604x453&quality=96&sign=31a5b3be693e2c2ad9c9022bb1abd45f&type=album")
+        else:
+            bot.send_message(message.chat.id, f'Ты набрал {k} баллов из 3')
+            bot.send_message(message.chat.id, 'Тебе стоит изучить родную планету получше...!')
+            bot.send_photo(message.chat.id, 'https://avatars.dzeninfra.ru/get-zen_doc/111343/pub_616144d1d416587b20979d68_616157a1e2620c77110b50c7/scale_1200')
+
+        t = 0
+        k = 0
+bot.infinity_polling()
